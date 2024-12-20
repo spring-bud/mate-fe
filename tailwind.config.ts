@@ -77,7 +77,7 @@ export default {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        // 심볼 컬러 (남색)
+        // 심볼 컬러
         symbol: {
           DEFAULT: '#111827',
           light: '#2228374',
