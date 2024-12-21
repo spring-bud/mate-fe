@@ -21,7 +21,7 @@ const Banner = () => {
       >
         <div className="flex flex-col justify-center h-full gap-6 text-white p-10">
           <h1 className="font-black text-5xl">
-            Quick Contact,
+            Quick Contact
             <br /> Quick Start!
           </h1>
           <motion.p
@@ -83,7 +83,7 @@ const Banner = () => {
       >
         <div className="flex flex-col justify-center items-end h-full gap-6 text-white p-10">
           <h1 className="font-black text-5xl">
-            No Fees, <br /> No Limit!
+            No Fees <br /> No Limit!
           </h1>
           <p className="text-2xl">Mate는 프리랜서와 이용자들에게 어떠한 수수료도, 제한도 없습니다!</p>
           <Button className="w-40 bg-white text-black hover:bg-white/90" onClick={handleSlide}>
