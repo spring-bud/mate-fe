@@ -1,3 +1,5 @@
+'use client';
+
 import Ui from './components/Ui';
 
 export default function Login() {
