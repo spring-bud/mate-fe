@@ -1,5 +1,10 @@
 import React from 'react';
+import Ui from './ui/Ui';
 
 export default function page() {
-  return <div>page</div>;
+  return (
+    <div>
+      <Ui />
+    </div>
+  );
 }
