@@ -1,4 +1,3 @@
-// components/smart/Header/index.tsx
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,7 @@ import CustomImage from '@/utils/customImage/CustomImage';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
-export default function Header() {
+const HeaderUi = () => {
   return (
     <div className="w-full border-b border-gray-800 bg-black">
       <div className="max-w-[1920px] mx-auto px-8">
@@ -43,4 +42,5 @@ export default function Header() {
       </div>
     </div>
   );
-}
+};
+export default HeaderUi;
