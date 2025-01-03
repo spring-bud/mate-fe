@@ -96,11 +96,7 @@ export default function Toolbar({ onReplace, getSelectedText, onImageUpload }: T
 
       {/* 나머지 버튼들 */}
       {toolbarItems.slice(4).map((item) => (
-        <button
-          key={item.type}
-          className="p-2 hover:bg-gray-700 rounded"
-          onClick={() => handleToolbarClick(item.type)}
-        >
+        <button key={item.type} className="p-2 hover:bg-gray-700 rounded" onClick={() => handleToolbarClick(item.type)}>
           {item.label}
         </button>
       ))}
