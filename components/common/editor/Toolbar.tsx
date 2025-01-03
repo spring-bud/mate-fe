@@ -1,4 +1,3 @@
-// components/common/Editor/Toolbar.tsx
 'use client';
 
 import { ImageIcon } from 'lucide-react';
@@ -61,9 +60,9 @@ export default function Toolbar({ onReplace, getSelectedText, onImageUpload }: T
     HR: () => '\n---\n',
     TABLE: () =>
       `/| 제목1 | 제목2
-    ---|---|---
-    내용 | 내용 | 내용
-    내용 | 내용 | 내용`,
+  ---|---|---
+내용 | 내용 | 내용
+내용 | 내용 | 내용`,
   };
 
   const handleToolbarClick = (type: string) => {

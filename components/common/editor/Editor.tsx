@@ -1,4 +1,3 @@
-// components/common/Editor/Editor.tsx
 'use client';
 
 import { useState, useRef } from 'react';
@@ -100,6 +99,13 @@ export default function Editor({ initialValue = '# 제목을 입력하세요', o
             <div className="w-1/2">
               <DragDrop onImageUpload={handleImageUpload}>
                 <div className="bg-[#1E2227] rounded-lg p-4">
+                <input
+                type="text"
+                placeholder="제목을 입력하세요"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full mb-4 px-3 py-2 bg-[#2A2E35] border border-gray-700 rounded text-sm text-white focus:outline-none focus:border-blue-500"
+              />
                   <Toolbar 
                     onReplace={replaceSelectedText}
                     getSelectedText={getSelectedText}
