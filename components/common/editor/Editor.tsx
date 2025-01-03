@@ -10,6 +10,7 @@ import { EditorState } from '@codemirror/state';
 import Toolbar from './Toolbar';
 import Preview from './Preview';
 import DragDrop from '../dragDrop/DragDrop';
+import TagInput from './TagInput';
 
 interface EditorProps {
   initialValue?: string;
@@ -20,6 +21,7 @@ export default function Editor({ initialValue = '# 제목을 입력하세요', o
   const [content, setContent] = useState(initialValue);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
   const editorRef = useRef<{
     view: EditorView;
     state: EditorState;
@@ -82,57 +84,76 @@ export default function Editor({ initialValue = '# 제목을 입력하세요', o
       }
     };
 
+      // 태그 관련 핸들러
+    const handleTagAdd = (newTag: string) => {
+      setTags(prev => [...prev, newTag]);
+    };
 
+    const handleTagRemove = (tagToRemove: string) => {
+      setTags(prev => prev.filter(tag => tag !== tagToRemove));
+    };
 
-  return (
-    <div className="flex gap-4">
-      <div className="w-1/2">
-        <DragDrop onImageUpload={handleImageUpload}>
-          <div className="bg-[#1E2227] rounded-lg p-4">
-          <input
-                type="text"
-                placeholder="제목을 입력하세요"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full mb-4 px-3 py-2 bg-[#2A2E35] border border-gray-700 rounded text-sm text-white focus:outline-none focus:border-blue-500"
-              />
-          <Toolbar 
-            onReplace={replaceSelectedText}
-            getSelectedText={getSelectedText}
-            onImageUpload={handleImageButtonClick}
-          />
-            <div className="relative">
-              <CodeMirror
-                value={content}
-                height="600px"
-                theme="dark"
-                extensions={[markdown({ base: markdownLanguage, codeLanguages: languages })]}
-                onChange={(value) => {
-                  setContent(value);
-                  onChange?.(value);
-                }}
-                className="border border-gray-700 rounded"
-                onCreateEditor={(view) => {
-                  editorRef.current = {
-                    view,
-                    state: view.state,
-                  };
-                }}
-              />
+    return (
+      <div className="bg-[#15181E] min-h-screen text-white">  
+        <main className="max-w-7xl mx-auto p-4">
+          <div className="flex gap-4">
+            <div className="w-1/2">
+              <DragDrop onImageUpload={handleImageUpload}>
+                <div className="bg-[#1E2227] rounded-lg p-4">
+                  <Toolbar 
+                    onReplace={replaceSelectedText}
+                    getSelectedText={getSelectedText}
+                    onImageUpload={() => fileInputRef.current?.click()}
+                  />
+                  <div className="relative">
+                    <CodeMirror
+                      value={content}
+                      height="600px"
+                      theme="dark"
+                      extensions={[markdown({ base: markdownLanguage, codeLanguages: languages })]}
+                      onChange={(value) => {
+                        setContent(value);
+                        onChange?.(value);
+                      }}
+                      className="border border-gray-700 rounded"
+                      onCreateEditor={(view) => {
+                        editorRef.current = {
+                          view,
+                          state: view.state,
+                        };
+                      }}
+                    />
+                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </DragDrop>
             </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleFileChange}
-            />
+            <div className="w-1/2">
+              <Preview content={content} className="h-[744px]" />
+            </div>
           </div>
-        </DragDrop>
+  
+          <div className="flex items-center gap-4 mt-4">
+            <button className="shrink-0 flex items-center gap-2 px-4 py-2 hover:bg-gray-700 rounded">
+            나가기
+            </button>
+            <TagInput
+              tags={tags}
+              onTagAdd={handleTagAdd}
+              onTagRemove={handleTagRemove}
+            />
+            <div className="shrink-0 flex gap-2">
+              <button className="px-4 py-2 hover:bg-gray-700 rounded">임시저장</button>
+              <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded">등록하기</button>
+            </div>
+          </div>
+        </main>
       </div>
-      <div className="w-1/2">
-        <Preview content={content} className="h-[744px]" />
-      </div>
-    </div>
-  );
-}
+    );
+  }
