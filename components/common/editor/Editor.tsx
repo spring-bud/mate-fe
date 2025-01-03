@@ -8,6 +8,7 @@ import { languages } from '@codemirror/language-data';
 import { EditorView } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
 import Toolbar from './Toolbar';
+import Preview from './Preview';
 
 interface EditorProps {
   initialValue?: string;
@@ -93,26 +94,36 @@ export default function Editor({ initialValue = '# 제목을 입력하세요', o
   };
 
   return (
-    <div className="bg-[#1E2227] rounded-lg p-4">
-      <Toolbar onToolbarClick={handleToolbarClick} onImageUpload={handleImageUpload} />
-      <div className="relative">
-        <CodeMirror
-          value={content}
-          height="600px"
-          theme="dark"
-          extensions={[markdown({ base: markdownLanguage, codeLanguages: languages })]}
-          onChange={(value) => {
-            setContent(value);
-            onChange?.(value);
-          }}
-          className="border border-gray-700 rounded"
-          onCreateEditor={(view) => {
-            editorRef.current = {
-              view,
-              state: view.state,
-            };
-          }}
-        />
+    <div className="flex gap-4">
+      {/* 에디터 영역 */}
+      <div className="w-1/2">
+        <div className="bg-[#1E2227] rounded-lg p-4">
+          <Toolbar onToolbarClick={handleToolbarClick} onImageUpload={handleImageUpload} />
+          <div className="relative">
+            <CodeMirror
+              value={content}
+              height="600px"
+              theme="dark"
+              extensions={[markdown({ base: markdownLanguage, codeLanguages: languages })]}
+              onChange={(value) => {
+                setContent(value);
+                onChange?.(value);
+              }}
+              className="border border-gray-700 rounded"
+              onCreateEditor={(view) => {
+                editorRef.current = {
+                  view,
+                  state: view.state,
+                };
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 프리뷰 영역 */}
+      <div className="w-1/2">
+        <Preview content={content} className="h-[744px]" />
       </div>
     </div>
   );
