@@ -109,7 +109,10 @@ export default function Editor({ initialValue = '# 제목을 입력하세요', o
                     value={content}
                     height="600px"
                     theme="dark"
-                    extensions={[markdown({ base: markdownLanguage, codeLanguages: languages })]}
+                    extensions={[
+                      markdown({ base: markdownLanguage, codeLanguages: languages }),
+                      EditorView.lineWrapping,
+                    ]}
                     onChange={(value) => {
                       setContent(value);
                       onChange?.(value);
