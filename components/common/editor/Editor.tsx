@@ -9,6 +9,7 @@ import { EditorView } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
 import Toolbar from './Toolbar';
 import Preview from './Preview';
+import DragDrop from '../dragDrop/DragDrop';
 
 interface EditorProps {
   initialValue?: string;
@@ -17,6 +18,7 @@ interface EditorProps {
 
 export default function Editor({ initialValue = '# 제목을 입력하세요', onChange }: EditorProps) {
   const [content, setContent] = useState(initialValue);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const editorRef = useRef<{
     view: EditorView;
     state: EditorState;
@@ -44,84 +46,82 @@ export default function Editor({ initialValue = '# 제목을 입력하세요', o
     });
   };
 
-  // 툴바 클릭 핸들러
-  const handleToolbarClick = (type: string) => {
-    const selectedText = getSelectedText();
-    const defaultTexts: { [key: string]: string } = {
-      H1: '제목 1',
-      H2: '제목 2',
-      H3: '제목 3',
-      H4: '제목 4',
-      B: '굵은 텍스트',
-      I: '기울임 텍스트',
-      U: '밑줄 텍스트',
-      Q: '인용문',
-      CODE: '코드',
-      LINK: '링크텍스트',
-      HR: '구분선',
-      TABLE: '표',
+
+    // 이미지를 마크다운 형식으로 변환하여 에디터에 추가
+    const addImageToEditor = (file: File) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imageUrl = reader.result as string;
+        const imageMarkdown = `![${file.name}](${imageUrl})\n`;
+        setContent(prev => prev + imageMarkdown);
+        onChange?.(content + imageMarkdown);
+      };
+      reader.readAsDataURL(file);
     };
 
-    const transformations: { [key: string]: (text: string) => string } = {
-      H1: (text) => `# ${text}`,
-      H2: (text) => `## ${text}`,
-      H3: (text) => `### ${text}`,
-      H4: (text) => `#### ${text}`,
-      B: (text) => `**${text}**`,
-      I: (text) => `*${text}*`,
-      U: (text) => `__${text}__`,
-      Q: (text) => `> ${text}`,
-      CODE: (text) => `\`\`\`\n${text}\n\`\`\``,
-      LINK: (text) => `[${text}](URL)`,
-      HR: () => '\n---\n',
-      TABLE: () =>
-        `/| 제목1 | 제목2
----|---|---
-내용 | 내용 | 내용
-내용 | 내용 | 내용`,
+
+    // 이미지 업로드 핸들러 (드래그 드롭용)
+    const handleImageUpload = (files: File[]) => {
+     if (files && files.length > 0) {
+        addImageToEditor(files[0]); 
+     }
     };
 
-    if (transformations[type]) {
-      const textToTransform = selectedText || defaultTexts[type];
-      const transformedText = transformations[type](textToTransform);
-      replaceSelectedText(transformedText);
-    }
-  };
+    // 이미지 버튼 클릭 핸들러 - Toolbar에 전달될 함수
+    const handleImageButtonClick = () => {
+      fileInputRef.current?.click();
+    };
 
-  // 이미지 업로드 핸들러
-  const handleImageUpload = () => {
-    console.log('Image upload clicked');
-  };
+      // 파일 input change 핸들러 (클릭 업로드용)
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = e.target.files;
+        if (files && files.length > 0) {
+        addImageToEditor(files[0]); 
+        e.target.value = ''; 
+      }
+    };
+
+
 
   return (
     <div className="flex gap-4">
-      {/* 에디터 영역 */}
       <div className="w-1/2">
-        <div className="bg-[#1E2227] rounded-lg p-4">
-          <Toolbar onToolbarClick={handleToolbarClick} onImageUpload={handleImageUpload} />
-          <div className="relative">
-            <CodeMirror
-              value={content}
-              height="600px"
-              theme="dark"
-              extensions={[markdown({ base: markdownLanguage, codeLanguages: languages })]}
-              onChange={(value) => {
-                setContent(value);
-                onChange?.(value);
-              }}
-              className="border border-gray-700 rounded"
-              onCreateEditor={(view) => {
-                editorRef.current = {
-                  view,
-                  state: view.state,
-                };
-              }}
+        <DragDrop onImageUpload={handleImageUpload}>
+          <div className="bg-[#1E2227] rounded-lg p-4">
+          <Toolbar 
+            onReplace={replaceSelectedText}
+            getSelectedText={getSelectedText}
+            onImageUpload={handleImageButtonClick}
+          />
+            <div className="relative">
+              <CodeMirror
+                value={content}
+                height="600px"
+                theme="dark"
+                extensions={[markdown({ base: markdownLanguage, codeLanguages: languages })]}
+                onChange={(value) => {
+                  setContent(value);
+                  onChange?.(value);
+                }}
+                className="border border-gray-700 rounded"
+                onCreateEditor={(view) => {
+                  editorRef.current = {
+                    view,
+                    state: view.state,
+                  };
+                }}
+              />
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
             />
           </div>
-        </div>
+        </DragDrop>
       </div>
-
-      {/* 프리뷰 영역 */}
       <div className="w-1/2">
         <Preview content={content} className="h-[744px]" />
       </div>
