@@ -10,7 +10,10 @@ interface PreviewProps {
 }
 
 export default function Preview({ content, className }: PreviewProps) {
-  const processedContent = content.replace(/__([^_]+)__/g, '<u>$1</u>');
+  const processedContent = content
+    .replace(/__([^_]+)__/g, '<u>$1</u>')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>');
 
   return (
     <div className={`bg-[#1E2227] rounded-lg p-4 ${className}`}>
@@ -25,7 +28,11 @@ export default function Preview({ content, className }: PreviewProps) {
             h3: ({ node, ...props }) => <h3 className="text-xl font-bold mt-4 mb-2" {...props} />,
             h4: ({ node, ...props }) => <h4 className="text-lg font-bold mt-3 mb-2" {...props} />,
             // 텍스트 스타일링
-            p: ({ children }) => <p className="my-2 leading-relaxed whitespace-pre-line">{children}</p>,
+            p: ({ children, ...props }) => (
+              <p className="my-2 leading-relaxed whitespace-pre-line" {...props}>
+                {children}
+              </p>
+            ),
             // 코드 블록 스타일링
             code({ node, inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '');
