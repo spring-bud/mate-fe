@@ -109,6 +109,11 @@ export default function Editor({ initialValue = '# 제목을 입력하세요', o
                     value={content}
                     height="600px"
                     theme="dark"
+                    basicSetup={{
+                      lineNumbers: false,
+                      highlightActiveLineGutter: false,
+                      highlightActiveLine: false,
+                    }}
                     extensions={[
                       markdown({ base: markdownLanguage, codeLanguages: languages }),
                       EditorView.lineWrapping,
