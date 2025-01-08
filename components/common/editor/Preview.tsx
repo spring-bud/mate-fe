@@ -17,19 +17,32 @@ export default function Preview({ content, className }: PreviewProps) {
           remarkPlugins={[[remarkGfm, { breaks: true }]]}
           rehypePlugins={[rehypeRaw]}
           components={{
-            // 제목 스타일링
-            h1: ({ node, ...props }) => <h1 className="text-3xl font-bold mt-6 mb-4" {...props} />,
-            h2: ({ node, ...props }) => <h2 className="text-2xl font-bold mt-5 mb-3" {...props} />,
-            h3: ({ node, ...props }) => <h3 className="text-xl font-bold mt-4 mb-2" {...props} />,
-            h4: ({ node, ...props }) => <h4 className="text-lg font-bold mt-3 mb-2" {...props} />,
-            // 텍스트 스타일링
+            h1: ({ children, ...props }) => (
+              <h1 className="text-3xl font-bold mt-6 mb-4" {...props}>
+                {children}
+              </h1>
+            ),
+            h2: ({ children, ...props }) => (
+              <h2 className="text-2xl font-bold mt-5 mb-3" {...props}>
+                {children}
+              </h2>
+            ),
+            h3: ({ children, ...props }) => (
+              <h3 className="text-xl font-bold mt-4 mb-2" {...props}>
+                {children}
+              </h3>
+            ),
+            h4: ({ children, ...props }) => (
+              <h4 className="text-lg font-bold mt-3 mb-2" {...props}>
+                {children}
+              </h4>
+            ),
             p: ({ children, ...props }) => (
               <p className="my-2 leading-relaxed whitespace-pre-line" {...props}>
                 {children}
               </p>
             ),
-            // 코드 블록 스타일링
-            code({ node, inline, className, children, ...props }) {
+            code({ inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '');
               const language = match ? match[1] : '';
               return !inline ? (
@@ -55,11 +68,9 @@ export default function Preview({ content, className }: PreviewProps) {
                 </code>
               );
             },
-            // 인용구 스타일링
             blockquote: ({ children }) => (
               <blockquote className="border-l-4 border-gray-500 pl-4 my-4 italic">{children}</blockquote>
             ),
-            // 표 스타일링
             table: ({ children }) => (
               <div className="overflow-x-auto my-4">
                 <table className="w-full border-collapse">{children}</table>
@@ -67,7 +78,6 @@ export default function Preview({ content, className }: PreviewProps) {
             ),
             th: ({ children }) => <th className="border border-gray-600 px-4 py-2 bg-gray-800">{children}</th>,
             td: ({ children }) => <td className="border border-gray-600 px-4 py-2">{children}</td>,
-            // 밑줄 스타일링
             u: ({ children }) => <span className="underline decoration-2">{children}</span>,
           }}
         >
