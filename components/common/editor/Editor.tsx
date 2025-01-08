@@ -13,10 +13,9 @@ import TagInput from './TagInput';
 
 interface EditorProps {
   initialValue?: string;
-  onChange?: (value: string) => void;
 }
 
-export default function Editor({ initialValue = '# 제목을 입력하세요', onChange }: EditorProps) {
+export default function Editor({ initialValue = '# 제목을 입력하세요' }: EditorProps) {
   const [content, setContent] = useState(initialValue);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState('');
@@ -39,7 +38,6 @@ export default function Editor({ initialValue = '# 제목을 입력하세요', o
     if (!editorRef.current?.view) return;
     const view = editorRef.current.view;
     const selection = view.state.selection.main;
-
     const from = selection.from;
     const to = selection.from === selection.to ? selection.from : selection.to;
 
@@ -55,7 +53,6 @@ export default function Editor({ initialValue = '# 제목을 입력하세요', o
       const imageUrl = reader.result as string;
       const imageMarkdown = `![${file.name}](${imageUrl})\n`;
       setContent((prev) => prev + imageMarkdown);
-      onChange?.(content + imageMarkdown);
     };
     reader.readAsDataURL(file);
   };
@@ -120,7 +117,6 @@ export default function Editor({ initialValue = '# 제목을 입력하세요', o
                     ]}
                     onChange={(value) => {
                       setContent(value);
-                      onChange?.(value);
                     }}
                     className="border border-gray-700 rounded"
                     onCreateEditor={(view) => {
@@ -139,7 +135,6 @@ export default function Editor({ initialValue = '# 제목을 입력하세요', o
             <Preview content={content} className="h-[744px]" />
           </div>
         </div>
-
         <div className="flex items-center gap-4 mt-4">
           <button className="shrink-0 flex items-center gap-2 px-4 py-2 hover:bg-gray-700 rounded">나가기</button>
           <TagInput tags={tags} onTagAdd={handleTagAdd} onTagRemove={handleTagRemove} />
