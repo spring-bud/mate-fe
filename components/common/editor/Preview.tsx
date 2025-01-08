@@ -10,11 +10,6 @@ interface PreviewProps {
 }
 
 export default function Preview({ content, className }: PreviewProps) {
-  const processedContent = content
-    .replace(/__([^_]+)__/g, '<u>$1</u>')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
-
   return (
     <div className={`bg-[#1E2227] rounded-lg p-4 ${className}`}>
       <div className="prose prose-invert max-w-none h-full overflow-y-auto">
@@ -37,7 +32,6 @@ export default function Preview({ content, className }: PreviewProps) {
             code({ node, inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '');
               const language = match ? match[1] : '';
-
               return !inline ? (
                 <SyntaxHighlighter
                   style={vscDarkPlus}
@@ -77,7 +71,7 @@ export default function Preview({ content, className }: PreviewProps) {
             u: ({ children }) => <span className="underline decoration-2">{children}</span>,
           }}
         >
-          {processedContent}
+          {content}
         </ReactMarkdown>
       </div>
     </div>

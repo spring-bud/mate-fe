@@ -53,7 +53,7 @@ export default function Toolbar({ onReplace, getSelectedText, onImageUpload }: T
     H4: (text) => `#### ${text}`,
     B: (text) => `**${text}**`,
     I: (text) => `*${text}*`,
-    U: (text) => `__${text}__`,
+    U: (text) => `<u>${text}</u>`,
     Q: (text) => `> ${text}`,
     CODE: (text) => `\`\`\`\n${text}\n\`\`\``,
     LINK: (text) => `[${text}](URL)`,
