@@ -15,11 +15,20 @@ interface EditorProps {
   initialValue?: string;
 }
 
+interface PublishData {
+  title: string;
+  content: string;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export default function Editor({ initialValue = '# 제목을 입력하세요' }: EditorProps) {
   const [content, setContent] = useState(initialValue);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState('');
   const [tags, setTags] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const editorRef = useRef<{
     view: EditorView;
     state: EditorState;
@@ -82,6 +91,41 @@ export default function Editor({ initialValue = '# 제목을 입력하세요' }:
     setTags((prev) => prev.filter((tag) => tag !== tagToRemove));
   };
 
+  // 등록 하기 프로세스
+  const handlePublish = async () => {
+    if (!title.trim()) {
+      alert('제목을 입력해주세요.');
+      return;
+    }
+    if (!content.trim()) {
+      alert('내용을 입력해주세요.');
+      return;
+    }
+    if (tags.length === 0) {
+      alert('최소 하나의 태그를 입력해주세요.');
+      return;
+    }
+    try {
+      setIsSubmitting(true);
+      const publishData: PublishData = {
+        title: title.trim(),
+        content,
+        tags,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      // 추후 실제 API 호출로 대체
+      console.log('Publishing data:', publishData);
+      // 성공 시 처리
+      alert('성공적으로 등록되었습니다.');
+    } catch (error) {
+      console.error('Failed to publish:', error);
+      alert('등록 중 오류가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="bg-[#15181E] min-h-screen text-white">
       <main className="max-w-7xl mx-auto p-4">
@@ -140,7 +184,13 @@ export default function Editor({ initialValue = '# 제목을 입력하세요' }:
           <TagInput tags={tags} onTagAdd={handleTagAdd} onTagRemove={handleTagRemove} />
           <div className="shrink-0 flex gap-2">
             <button className="px-4 py-2 hover:bg-gray-700 rounded">임시저장</button>
-            <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded">등록하기</button>
+            <button
+              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handlePublish}
+              disabled={isSubmitting}
+            >
+              등록하기
+            </button>
           </div>
         </div>
       </main>
