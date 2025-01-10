@@ -4,17 +4,34 @@ import { Button } from '@/components/ui/button';
 import CustomImage from '@/utils/customImage/CustomImage';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import Lottie from 'lottie-react';
+import { useEffect, useState } from 'react';
 
-const HeaderUi = () => {
+export default function Header() {
+  const [animationData, setAnimationData] = useState(null);
+
+  useEffect(() => {
+    fetch('/animations/eyes-animation.json')
+      .then((response) => response.json())
+      .then((data) => setAnimationData(data))
+      .catch((error) => console.error('Error loading animation:', error));
+  }, []);
+
   return (
     <div className="w-full border-b border-gray-800 bg-black">
       <div className="max-w-[1920px] mx-auto px-8">
         <div className="relative flex items-center justify-between h-16">
           {/* 왼쪽: 로고 */}
           <div className="flex items-center gap-8">
+            {/* 로고와 텍스트 */}
             <div className="flex items-center gap-2">
               <CustomImage src="/images/logo/Logo.png" alt="logo" height={40} width={40} className="cursor-pointer" />
               <p className="text-white text-2xl">Mate</p>
+            </div>
+
+            {/* 애니메이션 */}
+            <div className="w-[60px] h-[60px] flex items-center">
+              {animationData && <Lottie animationData={animationData} loop={true} style={{ opacity: 0.6 }} />}
             </div>
           </div>
 
@@ -42,5 +59,4 @@ const HeaderUi = () => {
       </div>
     </div>
   );
-};
-export default HeaderUi;
+}

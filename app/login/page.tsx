@@ -1,6 +1,4 @@
-'use client';
-
-import Ui from './ui/Ui';
+import Ui from './components/Ui';
 
 export default function Login() {
   const handleLogin = () => {};
