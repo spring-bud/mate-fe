@@ -6,7 +6,20 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { mockProducts } from '../Mock';
 
-const PopularItem = ({ data }) => {
+interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  rating: number;
+  imagePath: string;
+}
+
+interface PopularItemProps {
+  data: Product;
+}
+
+const PopularItem = ({ data }: PopularItemProps) => {
   return (
     <Card className="bg-white/10 border-0">
       <CardContent className="p-0">
