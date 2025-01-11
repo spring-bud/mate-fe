@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import CustomImage from '@/utils/customImage/CustomImage';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { authService } from '@/app/services/login/auth.service';
 
 const HeaderUi = () => {
   return (
@@ -38,6 +39,9 @@ const HeaderUi = () => {
               로그인
             </Button>
           </div>
+          <button className="text-white" onClick={authService.reissue}>
+            로그확인용
+          </button>
         </div>
       </div>
     </div>
