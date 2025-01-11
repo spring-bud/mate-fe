@@ -6,7 +6,15 @@ import DevIcon from '@/public/images/category/dev_icon.svg';
 import DesignIcon from '@/public/images/category/design_icon.svg';
 import { motion, useInView } from 'framer-motion';
 
-const CategoryCard = ({ image, icon: Icon, title, description, delay }) => {
+interface Props {
+  image: string;
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  title: string;
+  description: string;
+  delay: number;
+}
+
+const CategoryCard = ({ image, icon: Icon, title, description, delay }: Props) => {
   return (
     <motion.div
       className="relative w-1/2 group cursor-pointer"
