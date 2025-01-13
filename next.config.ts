@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['via.placeholder.com'],
+    domains: ['example.com'],
   },
   webpack(config) {
     config.module.rules.push({
