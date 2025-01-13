@@ -1,14 +1,9 @@
+import { User } from '../user/user';
+
 // 태그 인터페이스
 export interface ProductTag {
   tag_id: number;
   name: string;
-}
-
-// 사용자 인터페이스
-export interface User {
-  user_id: number;
-  nickname: string;
-  profile_url: string;
 }
 
 // 카운트 인터페이스
