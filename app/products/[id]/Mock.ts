@@ -1,6 +1,6 @@
 import { ProductDetail, Review } from '@/types/products/Products';
 
-export const getProductDetail = async (): Promise<ProductDetail> => {
+export const getMockProductDetail = async (): Promise<ProductDetail> => {
   const mockData: ProductDetail = {
     title: 'Spring Boot Tutorial',
     content: `# 웹/앱 풀스택 개발 서비스: 아이디어를 현실로 만들어드립니다
