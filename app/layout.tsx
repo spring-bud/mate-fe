@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import HeaderLayout from '@/components/shared/header/HeaderLayout';
 import Footer from '@/components/shared/footer/Footer';
+import ReactQueryProvider from '@/lib/react-query/provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -27,9 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <HeaderLayout />
-        {children}
-        <Footer />
+        <ReactQueryProvider>
+          <HeaderLayout />
+          {children}
+          <Footer />
+        </ReactQueryProvider>
       </body>
     </html>
   );
