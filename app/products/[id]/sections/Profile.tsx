@@ -1,15 +1,17 @@
 'use client';
 
-import { useProductStore } from '@/store/useProductStore';
 import { Badge } from '@/components/ui/badge';
 import CustomImage from '@/utils/customImage/CustomImage';
 import { Button } from '@/components/ui/button';
 import { MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ProductDetail } from '@/types/products/Products';
 
-export default function Profile() {
-  const product = useProductStore((state) => state.product);
+interface Props {
+  product: ProductDetail;
+}
 
+export default function Profile({ product }: Props) {
   if (!product) return null;
 
   const isActive = product.status === 'ACTIVE';
@@ -21,10 +23,8 @@ export default function Profile() {
           <div className="absolute left-6 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-gray-800"></div>
           <div className="absolute right-6 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-gray-800"></div>
         </div>
-        {/* Main Content */}
         <div className="mt-10 p-8 space-y-8">
           <div className="flex flex-col gap-4 items-center">
-            {/* 프로필 이미지 컨테이너 */}
             <div
               className={cn(
                 'rounded-full p-1',

@@ -1,9 +1,9 @@
 'use client';
 
-import { useProductStore } from '@/store/useProductStore';
 import { Star } from 'lucide-react';
 import CustomImage from '@/utils/customImage/CustomImage';
 import { Review } from '@/types/products/Products';
+import { ProductDetail } from '@/types/products/Products';
 
 interface ReviewCardProps {
   userProfileUrl: string;
@@ -30,16 +30,14 @@ function ReviewCard({ userProfileUrl, star, content }: ReviewCardProps) {
 }
 
 interface Props {
-  initialReviews: Review[];
+  product: ProductDetail;
+  reviews: Review[];
 }
-
-export default function Reviews({ initialReviews }: Props) {
-  const product = useProductStore((state) => state.product);
-
-  if (!product || !initialReviews.length) return null;
+export default function Reviews({ product, reviews }: Props) {
+  if (!product || !reviews.length) return null;
 
   // 평균 별점 계산
-  const averageRating = initialReviews.reduce((acc, review) => acc + review.star, 0) / initialReviews.length;
+  const averageRating = reviews.reduce((acc, review) => acc + review.star, 0) / reviews.length;
 
   return (
     <div className="space-y-6">
@@ -59,7 +57,7 @@ export default function Reviews({ initialReviews }: Props) {
         </div>
       </div>
       <div className="space-y-4">
-        {initialReviews.map((review) => (
+        {reviews.map((review) => (
           <ReviewCard
             key={review.user_id}
             userProfileUrl={review.user_profile_url}

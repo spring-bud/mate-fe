@@ -1,11 +1,21 @@
 'use client';
 
-import { useProductStore } from '@/store/useProductStore';
 import Preview from '@/components/common/editor/Preview';
 import Image from 'next/image';
+import { ProductDetail } from '@/types/products/Products';
 
-export default function MainContent() {
-  const product = useProductStore((state) => state.product);
+interface Props {
+  product: ProductDetail;
+}
+
+export default function MainContent({ product }: Props) {
+  const BookmarkIcon = () => (
+    <svg width="30" height="38" viewBox="0 0 24 32" fill="none" className="absolute top-0 right-4">
+      <path d="M0 0H24V32L12 24L0 32V0Z" fill="#FFC107" />
+    </svg>
+  );
+
+  if (!product) return null;
 
   const getCategoryIcon = () => {
     const category = product.category.category.toLowerCase();
@@ -14,14 +24,6 @@ export default function MainContent() {
     }
     return '/images/category/dev_icon.svg';
   };
-
-  const BookmarkIcon = () => (
-    <svg width="30" height="38" viewBox="0 0 24 32" fill="none" className="absolute top-0 right-4">
-      <path d="M0 0H24V32L12 24L0 32V0Z" fill="#FFC107" />
-    </svg>
-  );
-
-  if (!product) return null;
 
   return (
     <div className="bg-[#1E2227] rounded-lg overflow-hidden relative">
