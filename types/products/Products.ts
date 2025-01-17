@@ -27,6 +27,7 @@ export interface Review {
 
 // 메인 데이터 인터페이스
 export interface ProductDetail {
+  id: number;
   title: string;
   content: string;
   category: Category;
