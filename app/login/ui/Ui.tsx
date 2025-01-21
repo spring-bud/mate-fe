@@ -2,12 +2,10 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { RiKakaoTalkFill } from 'react-icons/ri';
+import Link from 'next/link';
+import { userApi } from '@/service/auth/api';
 
-interface Props {
-  onClick: () => void;
-}
-
-const Ui = ({ onClick: handleLogin }: Props) => {
+const Ui = () => {
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4">
       {/* Logo Area */}
@@ -24,15 +22,12 @@ const Ui = ({ onClick: handleLogin }: Props) => {
             <p className="text-slate-400 text-sm">빠르고 간편한 시작을 경험하세요</p>
           </div>
 
-          <button
-            onClick={() => {
-              handleLogin();
-            }}
-            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors"
-          >
-            <RiKakaoTalkFill className="text-xl" />
-            카카오로 3초만에 시작하기
-          </button>
+          <Link href={userApi.getKakaoLogin()}>
+            <button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+              <RiKakaoTalkFill className="text-xl" />
+              카카오로 3초만에 시작하기
+            </button>
+          </Link>
 
           <p className="text-slate-500 text-xs font-bold">카카오 계정으로 간편하게 시작해보세요</p>
         </CardContent>
