@@ -1,6 +1,6 @@
-import { baseURL } from '@/lib/axios/baiscApi';
+import { baseURL } from '@/lib/axios/defaultConfig';
 import { ENDPOINTS } from './constants';
-import basicAPI from '@/lib/axios/baiscApi';
+import { basicAPI } from '@/lib/axios/baiscApi';
 import { useUserStore } from '@/store/userStore';
 
 interface ReissueResponse {
