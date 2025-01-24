@@ -1,17 +1,14 @@
-// components/shared/header/Ui.tsx
 'use client';
 
 import { Button } from '@/components/ui/button';
 import CustomImage from '@/utils/customImage/CustomImage';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/providers/AuthProvider';
 import { useUserStore } from '@/store/userStore';
 import { userApi } from '@/service/auth/api';
 
 const HeaderUi = () => {
-  const { status } = useAuth();
-  const { nickname, userUrl } = useUserStore();
+  const { status, nickname, userUrl } = useUserStore();
 
   const handleLogin = () => {
     window.location.href = userApi.getKakaoLogin();
@@ -20,7 +17,6 @@ const HeaderUi = () => {
   const handleLogout = async () => {
     try {
       await userApi.logout();
-      // 로그아웃 후 홈으로 리다이렉트
       window.location.href = '/';
     } catch (error) {
       console.error('Logout failed:', error);
@@ -31,7 +27,6 @@ const HeaderUi = () => {
     <div className="w-full border-b border-gray-800 bg-black">
       <div className="max-w-[1920px] mx-auto px-8">
         <div className="relative flex items-center justify-between h-16">
-          {/* 로고 부분은 그대로 유지 */}
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-2">
               <CustomImage src="/images/logo/Logo.png" alt="logo" height={40} width={40} className="cursor-pointer" />
@@ -39,7 +34,6 @@ const HeaderUi = () => {
             </div>
           </div>
 
-          {/* 검색창 부분은 그대로 유지 */}
           <div className="flex-1 max-w-xl mx-8">
             <div className="relative flex items-center">
               <div className="absolute left-3 text-gray-400">
@@ -53,10 +47,8 @@ const HeaderUi = () => {
             </div>
           </div>
 
-          {/* 로그인/프로필 부분 수정 */}
           <div>
             {status === 'loading' ? (
-              // 로딩 스켈레톤
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gray-700 animate-pulse" />

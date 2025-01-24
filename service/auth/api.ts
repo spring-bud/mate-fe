@@ -19,13 +19,9 @@ export const userApi = {
 
   postReissue: async (): Promise<ReissueResponse> => {
     try {
-      console.log('Attempting to reissue token');
       const response = await basicAPI.post<ReissueResponse>(ENDPOINTS.AUTH.REISSUE, {});
 
-      console.log('Reissue response:', response.data);
-
       if (response.data.access_token) {
-        console.log('Setting new access token');
         useUserStore.getState().setUser(response.data.access_token);
       }
 
@@ -39,10 +35,7 @@ export const userApi = {
   logout: async (): Promise<LogoutResponse> => {
     try {
       const response = await authAPI.post<LogoutResponse>(ENDPOINTS.AUTH.LOGOUT, {});
-
-      // 로그아웃 성공 시 상태 초기화
       useUserStore.getState().clearUser();
-
       return response.data;
     } catch (error) {
       console.error('Logout API error:', error);

@@ -7,8 +7,11 @@ interface UserState {
   nickname: string | null;
   userUrl: string | null;
   isAuthenticated: boolean;
+  status: 'loading' | 'authenticated' | 'unauthenticated';
   setUser: (token: string) => void;
   clearUser: () => void;
+  setStatus: (status: 'loading' | 'authenticated' | 'unauthenticated') => void;
+  initialize: (isAuthenticated: boolean) => void;
 }
 
 interface DecodedToken {
@@ -26,6 +29,7 @@ export const useUserStore = create<UserState>((set) => ({
   nickname: null,
   userUrl: null,
   isAuthenticated: false,
+  status: 'loading',
 
   setUser: (token: string) => {
     const decoded = jwtDecode<DecodedToken>(token);
@@ -35,6 +39,7 @@ export const useUserStore = create<UserState>((set) => ({
       nickname: decoded.user_nickname,
       userUrl: decoded.user_url,
       isAuthenticated: true,
+      status: 'authenticated',
     });
   },
 
@@ -45,6 +50,18 @@ export const useUserStore = create<UserState>((set) => ({
       nickname: null,
       userUrl: null,
       isAuthenticated: false,
+      status: 'unauthenticated',
+    });
+  },
+
+  setStatus: (status) => {
+    set({ status });
+  },
+
+  initialize: (isAuthenticated: boolean) => {
+    set({
+      status: isAuthenticated ? 'authenticated' : 'unauthenticated',
+      isAuthenticated,
     });
   },
 }));
