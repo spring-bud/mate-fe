@@ -5,23 +5,15 @@ import CustomImage from '@/utils/customImage/CustomImage';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useUserStore } from '@/store/userStore';
-import { userApi } from '@/service/auth/api';
 
-const HeaderUi = () => {
+interface HeaderUiProps {
+  isAuthenticated: boolean;
+  onLogin: () => void;
+  onLogout: () => Promise<void>;
+}
+
+const HeaderUi = ({ isAuthenticated, onLogin, onLogout }: HeaderUiProps) => {
   const { status, nickname, userUrl } = useUserStore();
-
-  const handleLogin = () => {
-    window.location.href = userApi.getKakaoLogin();
-  };
-
-  const handleLogout = async () => {
-    try {
-      await userApi.logout();
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
-  };
 
   return (
     <div className="w-full border-b border-gray-800 bg-black">
@@ -46,44 +38,32 @@ const HeaderUi = () => {
               />
             </div>
           </div>
-
-          <div>
-            {status === 'loading' ? (
-              <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4">
+            {isAuthenticated ? (
+              <>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gray-700 animate-pulse" />
-                  <div className="h-4 w-20 bg-gray-700 rounded animate-pulse" />
-                </div>
-                <div className="w-24 h-9 bg-gray-700 rounded animate-pulse" />
-              </div>
-            ) : status === 'authenticated' ? (
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <CustomImage
-                    src={userUrl || '/images/mock/UserProfileSample1.png'}
-                    alt="profile"
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
-                  <span className="text-white">{nickname}</span>
+                  {status === 'loading' ? (
+                    <>
+                      <div className="w-8 h-8 rounded-full bg-gray-700 animate-pulse" />
+                      <div className="h-4 w-20 bg-gray-700 rounded animate-pulse" />
+                    </>
+                  ) : (
+                    <>
+                      <CustomImage src={userUrl} alt="profile" width={32} height={32} className="rounded-full" />
+                      <span className="text-white">{nickname}</span>
+                    </>
+                  )}
                 </div>
                 <Button
                   variant="outline"
-                  size="default"
                   className="border-gray-700 text-gray-300 hover:bg-gray-800"
-                  onClick={handleLogout}
+                  onClick={onLogout}
                 >
                   로그아웃
                 </Button>
-              </div>
+              </>
             ) : (
-              <Button
-                variant="default"
-                size="default"
-                className="bg-white text-black hover:bg-gray-100 font-medium"
-                onClick={handleLogin}
-              >
+              <Button variant="default" className="bg-white text-black hover:bg-gray-100 font-medium" onClick={onLogin}>
                 로그인
               </Button>
             )}

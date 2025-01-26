@@ -40,7 +40,7 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ReactQueryProvider>
           <InitializeAuth isAuthenticated={authStatus} />
-          <HeaderLayout />
+          <HeaderLayout isAuthenticated={authStatus} />
           {children}
           <Footer />
         </ReactQueryProvider>
