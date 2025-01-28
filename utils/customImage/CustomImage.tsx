@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 interface Props {
-  src: string;
+  src: string | null;
   alt: string;
   width: number;
   height: number;
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const CustomImage = ({ src, alt, width, height, onClick, className }: Props) => {
-  const [imageSrc, setImageSrc] = useState(src);
+  const [imageSrc, setImageSrc] = useState(src ?? '/images/mock/UserProfileSample1.png');
 
   const handleError = () => {
     setImageSrc('/images/mock/UserProfileSample1.png');

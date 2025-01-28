@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['example.com'],
+    domains: ['example.com', 'img1.kakaocdn.net'],
   },
   webpack(config) {
     config.module.rules.push({
